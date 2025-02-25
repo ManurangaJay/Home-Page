@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { CiHeart } from "react-icons/ci";
-import { FaHeart } from "react-icons/fa";
 import AddToCart from "./AddToCart";
 
 interface ProductCardProps {
@@ -46,10 +45,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="bg-gray-200 p-4 rounded-2xl w-80 shadow-lg relative">
+    <div className="bg-gray-200 p-4 rounded-2xl shadow-lg relative w-full sm:w-80">
       <button
         onClick={handleFavoriteClick}
-        className="absolute top-5 right-7 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md"
+        className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md"
       >
         <CiHeart
           className={`text-xl transition-colors ${
@@ -58,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         />
       </button>
 
-      <div className="w-full h-50 bg-gray-300 rounded-lg overflow-hidden">
+      <div className="w-full h-64 sm:h-56 bg-gray-300 rounded-lg overflow-hidden">
         <Image
           src={image}
           alt={name}
@@ -67,16 +66,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
           height={192}
         />
       </div>
+
       <div className="flex justify-between mt-4">
-        <h3 className="text-lg font-bold text-gray-800">{name}</h3>
-        <span className="text-lg font-semibold text-green-800">
+        <h3 className="text-base sm:text-lg font-bold text-gray-800">{name}</h3>
+        <span className="text-base sm:text-lg font-semibold text-green-800">
           LKR {price}
         </span>
       </div>
       <p className="text-sm text-gray-600 mt-2">{description}</p>
       <div className="mt-2">{renderStars(rating)}</div>
       <div className="mt-4">
-        <AddToCart onClick={handleAddToCart} />
+        <AddToCart
+          onClick={handleAddToCart}
+          className="w-full py-2 sm:py-3 text-sm sm:text-base"
+        />
       </div>
     </div>
   );

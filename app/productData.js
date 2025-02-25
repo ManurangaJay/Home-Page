@@ -48,6 +48,48 @@ const products = [
     description: "description of product 6.",
     rating: 3,
   },
+  {
+    image: product1,
+    name: "Product 7",
+    price: 2500,
+    description: "description of product 7.",
+    rating: 4,
+  },
+  {
+    image: product2,
+    name: "Product 8",
+    price: 3200,
+    description: "description of product 8.",
+    rating: 5,
+  },
+  {
+    image: product3,
+    name: "Product 9",
+    price: 1800,
+    description: "description of product 9.",
+    rating: 3,
+  },
+  {
+    image: product4,
+    name: "Product 10",
+    price: 2800,
+    description: "description of product 10.",
+    rating: 4,
+  },
+  {
+    image: product5,
+    name: "Product 11",
+    price: 3500,
+    description: "description of product 11.",
+    rating: 5,
+  },
+  {
+    image: product6,
+    name: "Product 12",
+    price: 1500,
+    description: "description of product 12.",
+    rating: 3,
+  },
 ];
 
 export default products;

@@ -1,5 +1,7 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image"; // Ensure correct imports
+import React, { useState } from "react";
+import Image, { StaticImageData } from "next/image";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import AddToCart from "./AddToCart";
 
 interface ProductCardProps {
@@ -17,8 +19,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
   description,
   rating,
 }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const handleAddToCart = () => {
-    console.log(`${name} added to cart!`);
+    alert(`${name} added to cart!`);
+  };
+
+  const handleFavoriteClick = () => {
+    setIsFavorite(!isFavorite);
+    alert(
+      isFavorite
+        ? `${name} removed from favorites!`
+        : `${name} added to favorites!`
+    );
   };
 
   const renderStars = (rating: number) => {
@@ -33,7 +46,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="bg-gray-200 p-4 rounded-2xl w-80 shadow-lg">
+    <div className="bg-gray-200 p-4 rounded-2xl w-80 shadow-lg relative">
+      <button
+        onClick={handleFavoriteClick}
+        className="absolute top-5 right-7 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md"
+      >
+        <CiHeart
+          className={`text-xl transition-colors ${
+            isFavorite ? "text-red-600" : "text-black "
+          }`}
+        />
+      </button>
+
       <div className="w-full h-50 bg-gray-300 rounded-lg overflow-hidden">
         <Image
           src={image}

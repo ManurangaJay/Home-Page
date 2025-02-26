@@ -10,6 +10,24 @@ import product9 from "../public/images/SchoolBag.png";
 import product10 from "../public/images/Men'sWallet.png";
 import product11 from "../public/images/women'sWallet.png";
 import product12 from "../public/images/mug.png";
+import product13 from "../public/images/3.5-Type-C_Adapter.png";
+import product14 from "../public/images/Type-C_to_HDMI_Converter.png";
+import product15 from "../public/images/Bulb.png";
+import product16 from "../public/images/Charger.png";
+import product17 from "../public/images/Gaming_KeyBoard.png";
+import product18 from "../public/images/Gas_cooker.png";
+import product19 from "../public/images/Hot_Plate.png";
+import product20 from "../public/images/KeyBoard.png";
+import product21 from "../public/images/Router.png";
+import product22 from "../public/images/Monitor.png";
+import product23 from "../public/images/Mouse.png";
+import product24 from "../public/images/Subwooper.png";
+import product25 from "../public/images/Laptop_Stand.png";
+import product26 from "../public/images/Wallet_Black.png";
+import product27 from "../public/images/Wallet_Pink.png";
+import product28 from "../public/images/JBL_Handsfree.png";
+import product29 from "../public/images/Handsfree.png";
+import product30 from "../public/images/Shoes.png";
 
 const products = [
   {
@@ -113,7 +131,165 @@ const products = [
     price: 1200,
     description: "description of Mug.",
     rating: 5,
+    reviewsCount: 386,
+  },
+  {
+    image: product13,
+    name: "3.5-Type-C_Adapter",
+    price: 1200,
+    description: "description of 3.5-Type-C_Adapter.",
+    rating: 5,
+    reviewsCount: 300,
+  },
+  {
+    image: product14,
+    name: "Type-C_to_HDMI_Converter",
+    price: 1200,
+    description: "Type-C_to_HDMI_Converter.",
+    rating: 5,
     reviewsCount: 28,
+  },
+  {
+    image: product15,
+    name: "Bulb",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Bulb.",
+    rating: 5,
+    reviewsCount: 800,
+  },
+  {
+    image: product16,
+    name: "Charger",
+    price: 1200,
+    description: "description of Charger.",
+    rating: 450,
+    reviewsCount: 28,
+  },
+  {
+    image: product17,
+    name: "Gaming_KeyBoard",
+    price: 2800,
+    discountedPrice: 2500,
+    description: "description of Gaming_KeyBoard.",
+    rating: 800,
+    reviewsCount: 28,
+  },
+  {
+    image: product18,
+    name: "Gas_cooker",
+    price: 3000,
+    discountedPrice: 2500,
+    description: "description of Hot_Plate.",
+    description: "description of Gas_cooker.",
+    rating: 5,
+    reviewsCount: 350,
+  },
+  {
+    image: product19,
+    name: "Hot_Plate",
+    price: 5000,
+    discountedPrice: 4200,
+    description: "description of Hot_Plate.",
+    rating: 5,
+    reviewsCount: 28,
+  },
+  {
+    image: product20,
+    name: "KeyBoard",
+    price: 1200,
+    description: "description of KeyBoard.",
+    rating: 5,
+    reviewsCount: 280,
+  },
+  {
+    image: product21,
+    name: "Router",
+    price: 1200,
+    description: "description of Router.",
+    rating: 5,
+    reviewsCount: 28,
+  },
+  {
+    image: product22,
+    name: "Monitor",
+    price: 20000,
+    discountedPrice: 15000,
+    description: "description of Monitor.",
+    rating: 5,
+    reviewsCount: 257,
+  },
+  {
+    image: product23,
+    name: "Mouse",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Mouse.",
+    rating: 5,
+    reviewsCount: 28,
+  },
+  {
+    image: product24,
+    name: "Subwooper",
+    price: 6000,
+    discountedPrice: 5000,
+    description: "description of Subwooper.",
+    rating: 5,
+    reviewsCount: 28,
+  },
+  {
+    image: product25,
+    name: "Laptop_Stand",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Laptop_Stand.",
+    rating: 5,
+    reviewsCount: 260,
+  },
+  {
+    image: product26,
+    name: "Wallet_Black",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Wallet_Black.",
+    rating: 5,
+    reviewsCount: 260,
+  },
+  {
+    image: product27,
+    name: "Wallet_Pink",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Wallet_Pink.",
+    rating: 5,
+    reviewsCount: 260,
+  },
+  {
+    image: product28,
+    name: "JBL_Handsfree",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of JBL_Handsfree.",
+    rating: 5,
+    reviewsCount: 260,
+  },
+  {
+    image: product29,
+    name: "Handsfree",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Laptop_Stand.",
+    rating: 5,
+    reviewsCount: 260,
+  },
+  {
+    image: product30,
+    name: "Shoes",
+    price: 1200,
+    discountedPrice: 1000,
+    description: "description of Shoes.",
+    rating: 5,
+    reviewsCount: 260,
   },
 ];
 

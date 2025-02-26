@@ -7,16 +7,22 @@ interface ProductCardProps {
   image: StaticImageData;
   name: string;
   price: number;
+  discountedPrice?: number;
   description: string;
   rating: number;
+  reviewsCount: number;
+  isDeal?: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   image,
   name,
   price,
+  discountedPrice,
   description,
   rating,
+  reviewsCount,
+  isDeal = false,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -69,16 +75,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       <div className="flex justify-between mt-4">
         <h3 className="text-base sm:text-lg font-bold text-gray-800">{name}</h3>
-        <span className="text-base sm:text-lg font-semibold text-green-800">
-          LKR {price}
-        </span>
+        {isDeal && discountedPrice ? (
+          <div className="text-right">
+            <span className="text-base sm:text-lg text-gray-500 line-through">
+              <span className="text-[9px] align-super">LKR</span> {price}
+            </span>
+          </div>
+        ) : (
+          <span className="text-base sm:text-lg font-semibold text-black">
+            <span className="text-[9px] align-super">LKR</span> {price}
+          </span>
+        )}
       </div>
-      <p className="text-sm text-gray-600 mt-2">{description}</p>
-      <div className="mt-2">{renderStars(rating)}</div>
+      <div className="flex justify-between items-center mt-2">
+        <p className="text-sm text-gray-600">{description}</p>
+        {isDeal && discountedPrice && (
+          <span className="text-base sm:text-lg font-semibold text-red-600">
+            <span className="text-[9px] align-super">LKR</span>{" "}
+            {discountedPrice}
+          </span>
+        )}
+      </div>
+
+      <div className="flex items-center mt-2">
+        <div className="flex">{renderStars(rating)}</div>
+        <span className="ml-2 text-sm text-gray-500">({reviewsCount})</span>
+      </div>
       <div className="mt-4">
         <AddToCart
           onClick={handleAddToCart}
-          className="w-full py-2 sm:py-3 text-sm sm:text-base"
+          className="py-2 sm:py-3 text-sm sm:text-base ml-0"
         />
       </div>
     </div>

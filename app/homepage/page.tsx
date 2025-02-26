@@ -20,7 +20,7 @@ const HomePage = () => {
     setShowAllDeals(true);
   };
 
-  // Sample best-selling products with more than 200 reviews
+  // Best-selling products with more than 200 reviews
   const bestSellingProducts = products.filter(
     (product) => product.reviewsCount > 200
   );
@@ -34,14 +34,13 @@ const HomePage = () => {
         Today's Featured Items:
       </h1>
 
-      {/* Featured Products Grid */}
+      {/* \Featured Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 p-1 md:p-10 justify-items-center">
         {products.slice(0, showAll ? products.length : 8).map((product) => (
           <ProductCard key={product.name} {...product} />
         ))}
       </div>
 
-      {/* View More Button for Featured Products */}
       {!showAll && (
         <div className="flex justify-center mt-8">
           <button
@@ -67,7 +66,6 @@ const HomePage = () => {
           ))}
       </div>
 
-      {/* View More Button for Best Selling Products */}
       {!showAllBestSellers && bestSellingProducts.length > 4 && (
         <div className="flex justify-center mt-8">
           <button
@@ -93,7 +91,6 @@ const HomePage = () => {
           ))}
       </div>
 
-      {/* View More Button for Today's Deals */}
       {!showAllDeals && todaysDeals.length > 4 && (
         <div className="flex justify-center mt-8">
           <button

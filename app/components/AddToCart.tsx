@@ -3,7 +3,7 @@ import React from "react";
 
 interface AddToCartProps {
   onClick: () => void;
-  className?: string; // Add className as an optional prop
+  className?: string;
 }
 
 const AddToCart: React.FC<AddToCartProps> = ({ onClick, className }) => {

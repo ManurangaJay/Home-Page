@@ -43,7 +43,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
     return Array.from({ length: 5 }, (_, index) => (
       <span
         key={index}
-        className={index < rating ? "text-green-800" : "text-gray-300"}
+        className={
+          index < rating ? "text-green-800 text-xl" : "text-gray-300 text-xl"
+        }
       >
         ★
       </span>

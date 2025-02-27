@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import Footer from "../components/Fotter";
 
 const HomePage = () => {
   const [visibleItems, setVisibleItems] = useState<{
@@ -42,7 +43,7 @@ const HomePage = () => {
     const itemsToScroll = 2;
 
     const newIndex =
-      direction === "left"
+      direction === "right"
         ? Math.max(currentIndex - itemsToScroll, 0)
         : Math.min(currentIndex + itemsToScroll, todaysDeals.length - 4);
 
@@ -141,7 +142,7 @@ const HomePage = () => {
             key={product.name}
             style={{
               flex: "0 0 25%",
-              maxWidth: "25%",
+              maxWidth: "27%",
               marginRight: "2vw",
             }}
           >
@@ -149,6 +150,7 @@ const HomePage = () => {
           </div>
         ))}
       </div>
+      <Footer />
     </div>
   );
 };

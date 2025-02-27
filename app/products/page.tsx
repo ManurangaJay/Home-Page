@@ -15,7 +15,6 @@ const Products = () => {
           <ProductCard key={index} {...product} />
         ))}
       </div>
-      <Footer />
     </div>
   );
 };

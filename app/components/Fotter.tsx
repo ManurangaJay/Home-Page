@@ -1,5 +1,6 @@
 import React from "react";
 import { MdArrowRight } from "react-icons/md";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -8,15 +9,20 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4 underline">Quick Links</h3>
           <ul className="space-y-2">
-            {["Home", "Products", "About Us", "Careers"].map((link) => (
-              <li key={link}>
-                <a
-                  href="#"
+            {[
+              { name: "Home", path: "/homepage" },
+              { name: "Products", path: "/products" },
+              { name: "About Us", path: "/about" },
+              { name: "Careers", path: "/careers" },
+            ].map((link) => (
+              <li key={link.name}>
+                <Link
+                  href={link.path}
                   className="flex items-center space-x-2 text-lg transition group"
                 >
                   <MdArrowRight className="text-xl text-gray-600 group-hover:text-gray-400 transition-transform transform group-hover:translate-x-1" />
-                  <span className="group-hover:text-gray-400">{link}</span>
-                </a>
+                  <span className="group-hover:text-gray-400">{link.name}</span>
+                </Link>
               </li>
             ))}
           </ul>
@@ -24,15 +30,18 @@ const Footer = () => {
 
         <div>
           <ul className="space-y-2 mt-10">
-            {["FAQS", "Privacy policy"].map((link) => (
-              <li key={link}>
-                <a
-                  href="#"
+            {[
+              { name: "FAQS", path: "/faqs" },
+              { name: "Privacy policy", path: "/privacy-policy" },
+            ].map((link) => (
+              <li key={link.name}>
+                <Link
+                  href={link.path}
                   className="flex items-center space-x-2 text-lg transition group"
                 >
                   <MdArrowRight className="text-xl text-gray-600 group-hover:text-gray-400 transition-transform transform group-hover:translate-x-1" />
-                  <span className="group-hover:text-gray-400">{link}</span>
-                </a>
+                  <span className="group-hover:text-gray-400">{link.name}</span>
+                </Link>
               </li>
             ))}
           </ul>

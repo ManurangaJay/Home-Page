@@ -1,4 +1,3 @@
-// pages/careers.tsx
 import React from "react";
 import Footer from "../components/Fotter";
 

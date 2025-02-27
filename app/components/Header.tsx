@@ -48,7 +48,7 @@ const Header = () => {
     <header className="bg-white p-2 flex items-center justify-center space-x-10">
       <div className="relative" ref={categoryRef}>
         <button
-          className="flex items-center appearance-none bg-white p-1"
+          className="flex items-center appearance-none bg-white p-1 font-bold"
           onClick={() => setIsCategoryDropdownOpen((prev) => !prev)}
         >
           {category}
@@ -92,7 +92,7 @@ const Header = () => {
           <FaUser className="text-gray-700 cursor-pointer text-xl mr-2" />{" "}
           <div className="flex flex-col items-start">
             <span className="text-xs text-gray-600">Welcome</span>
-            <span className="flex items-center">
+            <span className="flex items-center font-bold">
               Register/Sign in
               <IoIosArrowDown className="ml-2 text-gray-700 text-sm" />
             </span>

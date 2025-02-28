@@ -10,36 +10,25 @@ interface Product {
   price: number;
   image: string;
   description: string;
-  reviewsCount: number;
-  discountedPrice: number;
 }
 
 const HomePage = () => {
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [bestSellingProducts, setBestSellingProducts] = useState<Product[]>([]);
   const [todaysDeals, setTodaysDeals] = useState<Product[]>([]);
 
-  const [visibleItems, setVisibleItems] = useState<{
-    featured: number;
-    bestSellers: number;
-  }>({
-    featured: 4,
-    bestSellers: 4,
-  });
+  const [featuredPage, setFeaturedPage] = useState(0);
+  const [bestSellingPage, setBestSellingPage] = useState(0);
+  const [dealsPage, setDealsPage] = useState(0);
 
-  const handleViewMore = (section: "featured" | "bestSellers") => {
-    setVisibleItems((prevState) => ({
-      ...prevState,
-      [section]: prevState[section] + 4,
-    }));
-  };
-
-  const shouldShowViewMore = (
-    section: "featured" | "bestSellers",
-    totalItems: number
-  ) => {
-    return visibleItems[section] < totalItems;
+  const handleViewMore = (section: "featured" | "bestSellers" | "deals") => {
+    if (section === "featured") {
+      setFeaturedPage((prev) => prev + 1);
+    } else if (section === "bestSellers") {
+      setBestSellingPage((prev) => prev + 1);
+    } else if (section === "deals") {
+      setDealsPage((prev) => prev + 1);
+    }
   };
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -49,41 +38,41 @@ const HomePage = () => {
     const itemsToScroll = 2;
     const newIndex =
       direction === "right"
-        ? Math.max(currentIndex - itemsToScroll, 0)
-        : Math.min(currentIndex + itemsToScroll, todaysDeals.length - 4);
+        ? Math.min(currentIndex + itemsToScroll, todaysDeals.length - 4)
+        : Math.max(currentIndex - itemsToScroll, 0);
     setCurrentIndex(newIndex);
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Updated URL to get all products at once
-        const allProductsResponse = await axios.get<Product[]>(
-          "http://localhost:8080/api/products/all"
+        // Fetch Featured Products with Pagination
+        const featuredResponse = await axios.get<Product[]>(
+          `http://localhost:8080/api/products/featured?page=${featuredPage}&size=4`
         );
+        setFeaturedProducts((prev) => [...prev, ...featuredResponse.data]);
 
-        setAllProducts(allProductsResponse.data);
-
-        // Implement filtering logic based on conditions
-        const featured = allProductsResponse.data.slice(0, 16); // First 16 products
-        setFeaturedProducts(featured);
-
-        const bestSellers = allProductsResponse.data.filter(
-          (product) => product.reviewsCount > 200
+        // Fetch Best Selling Products with Pagination
+        const bestSellersResponse = await axios.get<Product[]>(
+          `http://localhost:8080/api/products/best-selling?page=${bestSellingPage}&size=4`
         );
-        setBestSellingProducts(bestSellers);
+        setBestSellingProducts((prev) => [
+          ...prev,
+          ...bestSellersResponse.data,
+        ]);
 
-        const deals = allProductsResponse.data.filter(
-          (product) => product.discountedPrice > 0
+        // Fetch Today's Deals with Pagination
+        const dealsResponse = await axios.get<Product[]>(
+          `http://localhost:8080/api/products/todays-deals?page=${dealsPage}&size=4`
         );
-        setTodaysDeals(deals);
+        setTodaysDeals((prev) => [...prev, ...dealsResponse.data]);
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [featuredPage, bestSellingPage, dealsPage]);
 
   useEffect(() => {
     if (dealsRef.current) {
@@ -101,43 +90,39 @@ const HomePage = () => {
         Today's Featured Items:
       </h1>
       <div className="grid-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 p-1 md:p-10 justify-items-center">
-        {featuredProducts.slice(0, visibleItems.featured).map((product) => (
+        {featuredProducts.slice(0, (featuredPage + 1) * 4).map((product) => (
           <ProductCard key={product.name} {...product} />
         ))}
       </div>
-      {shouldShowViewMore("featured", featuredProducts.length) && (
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={() => handleViewMore("featured")}
-            className="py-3 px-10 text-white bg-darkgreen rounded-full text-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
-            style={{ backgroundColor: "#006400" }}
-          >
-            View More
-          </button>
-        </div>
-      )}
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={() => handleViewMore("featured")}
+          className="py-3 px-10 text-white bg-darkgreen rounded-full text-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
+          style={{ backgroundColor: "#006400" }}
+        >
+          View More
+        </button>
+      </div>
 
       <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800 mt-16 mb-6 tracking-wide">
         Best Selling Products:
       </h2>
       <div className="grid-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 p-1 md:p-10 justify-items-center">
         {bestSellingProducts
-          .slice(0, visibleItems.bestSellers)
+          .slice(0, (bestSellingPage + 1) * 4)
           .map((product) => (
             <ProductCard key={product.name} {...product} />
           ))}
       </div>
-      {shouldShowViewMore("bestSellers", bestSellingProducts.length) && (
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={() => handleViewMore("bestSellers")}
-            className="py-3 px-10 text-white bg-darkgreen rounded-full text-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
-            style={{ backgroundColor: "#006400" }}
-          >
-            View More
-          </button>
-        </div>
-      )}
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={() => handleViewMore("bestSellers")}
+          className="py-3 px-10 text-white bg-darkgreen rounded-full text-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
+          style={{ backgroundColor: "#006400" }}
+        >
+          View More
+        </button>
+      </div>
 
       <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800 mt-16 mb-6 tracking-wide">
         Today's Deals:
@@ -173,7 +158,7 @@ const HomePage = () => {
           padding: "0 5vw",
         }}
       >
-        {todaysDeals.map((product, index) => (
+        {todaysDeals.slice(0, currentIndex + 4).map((product, index) => (
           <div
             key={product.name}
             style={{

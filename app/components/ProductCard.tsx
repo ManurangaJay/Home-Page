@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 import AddToCart from "./AddToCart";
 
 interface ProductCardProps {
-  image: StaticImageData;
+  image: string;
   name: string;
   price: number;
   discountedPrice?: number;
   description: string;
   rating: number;
-  reviewsCount: number;
+  reviewsCount?: number;
   isDeal?: boolean;
 }
 

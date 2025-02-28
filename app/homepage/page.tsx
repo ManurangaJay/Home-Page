@@ -10,12 +10,16 @@ interface Product {
   price: number;
   image: string;
   description: string;
+  reviewsCount: number;
+  discountedPrice: number;
 }
 
 const HomePage = () => {
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [bestSellingProducts, setBestSellingProducts] = useState<Product[]>([]);
   const [todaysDeals, setTodaysDeals] = useState<Product[]>([]);
+
   const [visibleItems, setVisibleItems] = useState<{
     featured: number;
     bestSellers: number;
@@ -53,19 +57,26 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const featuredResponse = await axios.get<Product[]>(
-          "http://localhost:8080/api/products/featured"
-        );
-        const bestSellersResponse = await axios.get<Product[]>(
-          "http://localhost:8080/api/products/bestsellers"
-        );
-        const dealsResponse = await axios.get<Product[]>(
-          "http://localhost:8080/api/products/deals"
+        // Updated URL to get all products at once
+        const allProductsResponse = await axios.get<Product[]>(
+          "http://localhost:8080/api/products/all"
         );
 
-        setFeaturedProducts(featuredResponse.data);
-        setBestSellingProducts(bestSellersResponse.data);
-        setTodaysDeals(dealsResponse.data);
+        setAllProducts(allProductsResponse.data);
+
+        // Implement filtering logic based on conditions
+        const featured = allProductsResponse.data.slice(0, 16); // First 16 products
+        setFeaturedProducts(featured);
+
+        const bestSellers = allProductsResponse.data.filter(
+          (product) => product.reviewsCount > 200
+        );
+        setBestSellingProducts(bestSellers);
+
+        const deals = allProductsResponse.data.filter(
+          (product) => product.discountedPrice > 0
+        );
+        setTodaysDeals(deals);
       } catch (error) {
         console.error("Error fetching product data:", error);
       }

@@ -8,6 +8,7 @@ interface Product {
   price: number;
   image: string;
   description: string;
+  rating: number;
 }
 
 const TodaysDeals = () => {

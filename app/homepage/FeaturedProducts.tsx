@@ -18,7 +18,8 @@ const FeaturedProducts = () => {
     const fetchFeaturedProducts = async () => {
       try {
         const response = await axios.get<Product[]>(
-          `http://localhost:8080/api/products/featured?page=${featuredPage}&size=4`
+          // `http://localhost:8080/api/products/featured?page=${featuredPage}&size=4`
+          `http://localhost:3001/products?section=featured&page=${featuredPage}&limit=4`
         );
         setFeaturedProducts((prev) => [...prev, ...response.data]);
       } catch (error) {

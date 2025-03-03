@@ -18,7 +18,8 @@ const BestSellingProducts = () => {
     const fetchBestSellingProducts = async () => {
       try {
         const response = await axios.get<Product[]>(
-          `http://localhost:8080/api/products/best-selling?page=${bestSellingPage}&size=4`
+          // `http://localhost:8080/api/products/best-selling?page=${bestSellingPage}&size=4`
+          `http://localhost:3001/products?section=best-selling&page=${bestSellingPage}&limit=4`
         );
         setBestSellingProducts((prev) => [...prev, ...response.data]);
       } catch (error) {

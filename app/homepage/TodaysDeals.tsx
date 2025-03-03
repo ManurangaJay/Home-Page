@@ -20,7 +20,8 @@ const TodaysDeals = () => {
   const fetchTodaysDeals = async (newPage: number) => {
     try {
       const response = await axios.get<Product[]>(
-        `http://localhost:8080/api/products/todays-deals?page=${newPage}&size=20`
+        // `http://localhost:8080/api/products/todays-deals?page=${newPage}&size=20`
+        `http://localhost:3001/products?section=deals&page=${newPage}&limit=20`
       );
       setTodaysDeals((prev) => [...prev, ...response.data]);
     } catch (error) {

@@ -33,16 +33,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setNewProduct((prev) => ({
-        ...prev,
-        image: URL.createObjectURL(file),
-      }));
-    }
-  };
-
   const handleSave = () => {
     onSave(newProduct);
     onClose();
@@ -103,10 +93,13 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Upload Image</label>
+          <label className="block text-gray-700 mb-2">Image URL</label>
           <input
-            type="file"
-            onChange={handleImageChange}
+            type="text"
+            name="image"
+            value={newProduct.image}
+            onChange={handleChange}
+            placeholder="Enter the image URL"
             className="w-full border p-3 rounded-lg shadow-sm"
           />
           {newProduct.image && (

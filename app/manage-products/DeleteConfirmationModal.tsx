@@ -13,11 +13,10 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  if (!isOpen) return null; // Don't render the modal if it's not open
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
-      {/* Apply backdrop-blur class here for the background blur effect */}
       <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
 
       <div className="bg-white p-6 rounded-xl shadow-lg w-96 relative z-10">

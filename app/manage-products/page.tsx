@@ -90,15 +90,22 @@ const ManageProducts = () => {
 
   const handleAddProduct = async (newProduct: Product) => {
     try {
+      const productToSave = {
+        ...newProduct,
+        rating: newProduct.rating || 0,
+        reviewsCount: newProduct.reviewsCount || 0,
+        isDeal: newProduct.isDeal || false,
+      };
+
       const response = await axios.post<Product>(
         `http://localhost:3001/products`,
-        newProduct
+        productToSave
       );
       setProducts((prev) => [...prev, response.data]);
       setToastMessage(`Product "${newProduct.name}" added successfully!`);
       setToastType("success");
     } catch (error) {
-      console.error("Error adding product:", error);
+      console.error("Error adding product:", error.response || error);
       setToastMessage("Failed to add product.");
       setToastType("error");
     }

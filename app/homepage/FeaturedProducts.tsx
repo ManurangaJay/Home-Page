@@ -39,7 +39,7 @@ const FeaturedProducts = () => {
           Today's Featured Items:
         </h1>
       </div>
-      <div className="lg:pl-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {featuredProducts.map((product) => (
           <ProductCard key={product.name} {...product} />
         ))}

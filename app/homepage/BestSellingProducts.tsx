@@ -37,7 +37,7 @@ const BestSellingProducts = () => {
       <h2 className="text-4xl font-semibold text-gray-800 mt-16 mb-6">
         Best Selling Products:
       </h2>
-      <div className="lg:pl-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {bestSellingProducts.map((product) => (
           <ProductCard key={product.name} {...product} />
         ))}

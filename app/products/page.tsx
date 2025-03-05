@@ -2,7 +2,6 @@
 import React from "react";
 import products from "../productData";
 import ProductCard from "../components/ProductCard";
-import Footer from "../components/Fotter";
 
 const Products = () => {
   return (

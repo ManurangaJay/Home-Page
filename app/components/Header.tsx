@@ -5,15 +5,15 @@ import { RiHeart3Line } from "react-icons/ri";
 import { PiHandbagSimpleBold } from "react-icons/pi";
 import { LuSearch } from "react-icons/lu";
 import { IoIosArrowDown } from "react-icons/io";
+import Link from "next/link";
 
 const Header = () => {
   const [category, setCategory] = useState("All Categories");
-  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false); // Category dropdown visibility
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // Register/Sign in dropdown visibility
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
-  // Declare refs with proper typing for HTMLDivElement
-  const categoryRef = useRef<HTMLDivElement>(null); // Ref for category dropdown
-  const userRef = useRef<HTMLDivElement>(null); // Ref for user dropdown
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const userRef = useRef<HTMLDivElement>(null);
 
   const categories = [
     "All Categories",
@@ -121,6 +121,12 @@ const Header = () => {
       <PiHandbagSimpleBold className="text-2xl cursor-pointer" />
 
       <RiHeart3Line className="text-2xl cursor-pointer" />
+
+      <Link href="/manage-products">
+        <button className="text-sm font-bold text-gray-700 hover:bg-gray-200 py-2 px-4 rounded-md bg-gray-100">
+          Manage Products
+        </button>
+      </Link>
     </header>
   );
 };

@@ -9,6 +9,7 @@ interface Product {
   image: string;
   description: string;
   rating: number;
+  id: number;
 }
 
 const TodaysDeals = () => {

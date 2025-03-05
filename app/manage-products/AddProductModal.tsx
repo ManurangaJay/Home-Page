@@ -45,10 +45,10 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
   const handleSave = () => {
     onSave(newProduct);
-    onClose(); // Close the modal after saving
+    onClose();
   };
 
-  if (!isOpen) return null; // Don't render the modal if it's not open
+  if (!isOpen) return null;
 
   return (
     <div
@@ -58,7 +58,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       <div className="bg-white p-8 rounded-xl w-[500px] shadow-lg">
         <h2 className="text-2xl font-semibold mb-6">Add New Product</h2>
 
-        {/* Product Name */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Name</label>
           <input
@@ -70,7 +69,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Product Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Price</label>
           <input
@@ -82,7 +80,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Discounted Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Discounted Price</label>
           <input
@@ -94,7 +91,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Product Description */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Description</label>
           <input
@@ -106,7 +102,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Product Image Upload */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Upload Image</label>
           <input
@@ -125,7 +120,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           )}
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end gap-4">
           <button
             onClick={onClose}

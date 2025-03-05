@@ -8,6 +8,7 @@ import AddProductModal from "./AddProductModal";
 import Toast from "./Toast";
 
 interface Product {
+  id?: number;
   name: string;
   price: number;
   discountedPrice?: number;
@@ -24,7 +25,7 @@ const ManageProducts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState<string | null>(null);
+  const [productToDelete, setProductToDelete] = useState<number | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "error">("success");
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
@@ -44,26 +45,64 @@ const ManageProducts = () => {
     fetchProducts();
   }, [page]);
 
-  const handleEdit = (product: Product) => {
-    setCurrentProduct(product);
-    setIsModalOpen(true);
+  const handleEdit = async (product: Product) => {
+    try {
+      const response = await axios.put<Product>(
+        `http://localhost:3001/products/${product.id}`,
+        product
+      );
+      setProducts((prev) =>
+        prev.map((p) => (p.id === product.id ? response.data : p))
+      );
+      setToastMessage("Product updated successfully!");
+      setToastType("success");
+    } catch (error) {
+      console.error("Error updating product:", error);
+      setToastMessage("Failed to update product.");
+      setToastType("error");
+    }
+    setIsModalOpen(false);
   };
 
-  const handleDelete = (productName: string) => {
-    setProductToDelete(productName);
+  const handleDelete = (id: number) => {
+    setProductToDelete(id);
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (productToDelete) {
-      setProducts((prev) =>
-        prev.filter((product) => product.name !== productToDelete)
-      );
-      setToastMessage(`Product "${productToDelete}" deleted successfully!`);
-      setToastType("success");
+      try {
+        await axios.delete(`http://localhost:3001/products/${productToDelete}`);
+        setProducts((prev) =>
+          prev.filter((product) => product.id !== productToDelete)
+        );
+        setToastMessage("Product deleted successfully!");
+        setToastType("success");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        setToastMessage("Failed to delete product.");
+        setToastType("error");
+      }
     }
     setIsDeleteModalOpen(false);
     setProductToDelete(null);
+  };
+
+  const handleAddProduct = async (newProduct: Product) => {
+    try {
+      const response = await axios.post<Product>(
+        `http://localhost:3001/products`,
+        newProduct
+      );
+      setProducts((prev) => [...prev, response.data]);
+      setToastMessage(`Product "${newProduct.name}" added successfully!`);
+      setToastType("success");
+    } catch (error) {
+      console.error("Error adding product:", error);
+      setToastMessage("Failed to add product.");
+      setToastType("error");
+    }
+    setIsAddProductModalOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -71,19 +110,8 @@ const ManageProducts = () => {
     setCurrentProduct(null);
   };
 
-  const handleAddProduct = (newProduct: Product) => {
-    setProducts((prev) => [...prev, newProduct]);
-    setToastMessage(`Product "${newProduct.name}" added successfully!`);
-    setToastType("success");
-  };
-
   const handleToastClose = () => {
     setToastMessage(null);
-  };
-
-  const handleToastShow = (message: string) => {
-    setToastMessage(message);
-    setToastType("success");
   };
 
   return (
@@ -103,7 +131,7 @@ const ManageProducts = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 py-5 pb-10">
         {products.map((product) => (
           <ManageProductCard
-            key={product.name}
+            key={product.id}
             image={product.image}
             name={product.name}
             price={product.price}
@@ -112,8 +140,8 @@ const ManageProducts = () => {
             rating={product.rating}
             reviewsCount={product.reviewsCount}
             isDeal={product.isDeal}
-            onEdit={() => handleEdit(product)}
-            onDelete={() => handleDelete(product.name)}
+            onEdit={() => setCurrentProduct(product) || setIsModalOpen(true)}
+            onDelete={() => handleDelete(product.id!)}
           />
         ))}
       </div>
@@ -123,14 +151,14 @@ const ManageProducts = () => {
           isOpen={isModalOpen}
           product={currentProduct}
           onClose={handleCloseModal}
-          onSave={() => handleToastShow("Product updated successfully!")}
+          onSave={handleEdit}
         />
       )}
 
       {isDeleteModalOpen && (
         <DeleteConfirmationModal
           isOpen={isDeleteModalOpen}
-          productName={productToDelete!}
+          productName={currentProduct?.name!}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={handleConfirmDelete}
         />

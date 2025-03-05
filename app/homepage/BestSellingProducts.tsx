@@ -3,6 +3,7 @@ import axios from "axios";
 import ProductCard from "../components/ProductCard";
 
 interface Product {
+  id: number;
   name: string;
   price: number;
   image: string;
@@ -39,7 +40,7 @@ const BestSellingProducts = () => {
       </h2>
       <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {bestSellingProducts.map((product) => (
-          <ProductCard key={product.name} {...product} />
+          <ProductCard key={product.id} {...product} />
         ))}
       </div>
       <div className="flex justify-center mt-8">

@@ -42,7 +42,7 @@ const FeaturedProducts = () => {
       </div>
       <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {featuredProducts.map((product) => (
-          <ProductCard key={product.id} {...product} />
+          <ProductCard key={`${product.id}-${featuredPage}`} {...product} />
         ))}
       </div>
       <div className="flex justify-center mt-8">

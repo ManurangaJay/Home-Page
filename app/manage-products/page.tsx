@@ -138,7 +138,9 @@ const ManageProducts = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 py-5 pb-10">
         {products.map((product) => (
           <ManageProductCard
-            key={product.id}
+            key={`${product.id}-${page}-${Math.random()
+              .toString(36)
+              .substr(2, 9)}`}
             image={product.image}
             name={product.name}
             price={product.price}

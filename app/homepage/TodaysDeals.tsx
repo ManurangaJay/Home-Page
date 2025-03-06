@@ -86,7 +86,7 @@ const TodaysDeals = () => {
         {todaysDeals.map((product) => (
           <div
             className="pb-5 lg:pl-8"
-            key={product.name}
+            key={`${product.id}-${currentIndex}`} // Combine product ID and currentIndex for uniqueness
             style={{
               flex: `0 0 ${
                 window.innerWidth < 768

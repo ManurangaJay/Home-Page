@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+interface Category {
+  id: number;
+  name: string;
+}
 
 interface EditProductModalProps {
   isOpen: boolean;
@@ -7,6 +12,7 @@ interface EditProductModalProps {
     price: number;
     discountedPrice?: number;
     description: string;
+    categoryId: number | null; // Add categoryId here for the existing product
   };
   onClose: () => void;
   onSave: (updatedProduct: {
@@ -14,6 +20,7 @@ interface EditProductModalProps {
     price: number;
     discountedPrice?: number;
     description: string;
+    categoryId: number | null; // categoryId should be updated too
   }) => void;
 }
 
@@ -24,12 +31,40 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   onSave,
 }) => {
   const [editedProduct, setEditedProduct] = useState(product);
+  const [categories, setCategories] = useState<Category[]>([]); // State for categories
+  const [loading, setLoading] = useState<boolean>(false); // Loading state for categories
+
+  // Fetch categories when the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLoading(true);
+      fetch("http://localhost:3001/categories")
+        .then((response) => response.json())
+        .then((data) => {
+          setCategories(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching categories:", error);
+          setLoading(false);
+        });
+    }
+  }, [isOpen]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditedProduct((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategoryId =
+      e.target.value === "none" ? null : Number(e.target.value);
+    setEditedProduct((prev) => ({
+      ...prev,
+      categoryId: selectedCategoryId,
     }));
   };
 
@@ -48,6 +83,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       <div className="bg-white p-8 rounded-xl w-[500px] shadow-lg">
         <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
 
+        {/* Product Name */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Name</label>
           <input
@@ -59,6 +95,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
+        {/* Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Price (LKR)</label>
           <input
@@ -70,6 +107,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
+        {/* Discounted Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">
             Discounted Price (LKR)
@@ -83,6 +121,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
+        {/* Description */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Description</label>
           <input
@@ -92,6 +131,29 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
             onChange={handleChange}
             className="w-full border p-3 rounded-lg shadow-sm"
           />
+        </div>
+
+        {/* Category Dropdown */}
+        <div className="mb-6">
+          <label className="block text-gray-700 mb-2">Category</label>
+          <select
+            value={editedProduct.categoryId ?? "none"} // Set selected category
+            onChange={handleCategoryChange}
+            className="w-full border p-3 rounded-lg shadow-sm"
+          >
+            <option value="none">No Category</option>
+            {loading ? (
+              <option value="loading" disabled>
+                Loading categories...
+              </option>
+            ) : (
+              categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))
+            )}
+          </select>
         </div>
 
         <div className="flex justify-end gap-4">

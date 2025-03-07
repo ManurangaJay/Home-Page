@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import { FaCircleArrowLeft, FaCircleArrowRight } from "react-icons/fa6";
+import { useCategory } from "../../context/CategoryContext";
 
 interface Product {
   name: string;
@@ -13,6 +14,7 @@ interface Product {
 }
 
 const TodaysDeals = () => {
+  const { selectedCategoryId } = useCategory();
   const [todaysDeals, setTodaysDeals] = useState<Product[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [page, setPage] = useState<number>(0);
@@ -20,11 +22,15 @@ const TodaysDeals = () => {
 
   const fetchTodaysDeals = async (newPage: number) => {
     try {
+      const categoryParam = selectedCategoryId
+        ? `&category=${selectedCategoryId}`
+        : "";
       const response = await axios.get<Product[]>(
-        // `http://localhost:8080/api/products/todays-deals?page=${newPage}&size=20`
-        `http://localhost:3001/products?section=deals&page=${newPage}&limit=20`
+        `http://localhost:3001/products?section=deals&page=${newPage}&limit=20${categoryParam}`
       );
-      setTodaysDeals((prev) => [...prev, ...response.data]);
+      setTodaysDeals((prev) =>
+        newPage === 0 ? response.data : [...prev, ...response.data]
+      );
     } catch (error) {
       console.error("Error fetching today's deals:", error);
     }
@@ -32,7 +38,15 @@ const TodaysDeals = () => {
 
   useEffect(() => {
     fetchTodaysDeals(page);
-  }, [page]);
+  }, [page, selectedCategoryId]);
+
+  // Reset deals when category changes
+  useEffect(() => {
+    setPage(0);
+    setCurrentIndex(0);
+    setTodaysDeals([]);
+    fetchTodaysDeals(0);
+  }, [selectedCategoryId]);
 
   const scrollDeals = (direction: "left" | "right") => {
     const itemsToScroll =
@@ -73,20 +87,20 @@ const TodaysDeals = () => {
         />
         <FaCircleArrowRight
           size={40}
-          className="cursor-pointer  bg-white text-gray-400 transition delay-150 
+          className="cursor-pointer bg-white text-gray-400 transition delay-150 
           duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           onClick={() => scrollDeals("right")}
         />
       </div>
       <div
         ref={dealsRef}
-        className="flex overflow-x-auto gap-4 px-4 scrollbar-hide "
+        className="flex overflow-x-auto gap-4 px-4 scrollbar-hide"
         style={{ scrollSnapType: "x mandatory" }}
       >
         {todaysDeals.map((product) => (
           <div
             className="pb-5 lg:pl-8"
-            key={`${product.id}-${currentIndex}`} // Combine product ID and currentIndex for uniqueness
+            key={`${product.id}-${currentIndex}`}
             style={{
               flex: `0 0 ${
                 window.innerWidth < 768

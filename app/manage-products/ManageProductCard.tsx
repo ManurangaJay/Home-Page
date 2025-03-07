@@ -4,6 +4,7 @@ import EditProductButton from "./EditProductButton";
 import DeleteProductButton from "./DeleteProductButton";
 
 interface ManageProductCardProps {
+  id: number;
   image: string;
   name: string;
   price: number;
@@ -13,10 +14,11 @@ interface ManageProductCardProps {
   reviewsCount?: number;
   isDeal?: boolean;
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete: (id: number) => void;
 }
 
 const ManageProductCard: React.FC<ManageProductCardProps> = ({
+  id,
   image,
   name,
   price,
@@ -76,7 +78,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
 
       <div className="flex justify-between mt-4">
         <EditProductButton onClick={onEdit} />
-        <DeleteProductButton onClick={onDelete} />
+        <DeleteProductButton
+          productId={id}
+          productName={name}
+          onDelete={onDelete}
+        />
       </div>
     </div>
   );

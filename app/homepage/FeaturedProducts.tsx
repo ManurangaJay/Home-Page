@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import { useCategory } from "../../context/CategoryContext";
 
 interface Product {
   name: string;
@@ -12,35 +13,38 @@ interface Product {
 }
 
 const FeaturedProducts = () => {
+  const { selectedCategoryId } = useCategory();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [featuredPage, setFeaturedPage] = useState(0);
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
+        const categoryParam = selectedCategoryId
+          ? `&category=${selectedCategoryId}`
+          : "";
         const response = await axios.get<Product[]>(
-          // `http://localhost:8080/api/products/featured?page=${featuredPage}&size=4`
-          `http://localhost:3001/products?section=featured&page=${featuredPage}&limit=4`
+          `http://localhost:3001/products?section=featured&page=${featuredPage}&limit=4${categoryParam}`
         );
-        setFeaturedProducts((prev) => [...prev, ...response.data]);
+        setFeaturedProducts(response.data);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }
     };
 
     fetchFeaturedProducts();
-  }, [featuredPage]);
+  }, [featuredPage, selectedCategoryId]);
 
   const handleViewMore = () => setFeaturedPage((prev) => prev + 1);
 
   return (
     <div>
-      <div>
-        <h1 className="text-4xl font-semibold text-gray-800 mb-6">
-          Today's Featured Items:
-        </h1>
-      </div>
-      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <h1 className="text-4xl font-semibold text-gray-800 mb-6">
+        {selectedCategoryId
+          ? `Today's Featured Items(Under the Selected Category)`
+          : "Today's Featured Items:"}
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {featuredProducts.map((product) => (
           <ProductCard key={`${product.id}-${featuredPage}`} {...product} />
         ))}

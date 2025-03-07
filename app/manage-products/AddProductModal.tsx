@@ -14,7 +14,7 @@ interface AddProductModalProps {
     discountedPrice?: number;
     description: string;
     image: string;
-    categoryId: number | null; // Category can be null if not selected
+    categoryId: number | null;
   }) => void;
 }
 
@@ -29,13 +29,12 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     discountedPrice: 0,
     description: "",
     image: "",
-    categoryId: null as number | null, // Initially no category
+    categoryId: null as number | null,
   });
 
-  const [categories, setCategories] = useState<Category[]>([]); // State for categories
-  const [loading, setLoading] = useState<boolean>(false); // Loading state for categories
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // Fetch categories from the backend when the modal opens
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
@@ -84,7 +83,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       <div className="bg-white p-8 rounded-xl w-[500px] shadow-lg">
         <h2 className="text-2xl font-semibold mb-6">Add New Product</h2>
 
-        {/* Product Name */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Name</label>
           <input
@@ -96,7 +94,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Price</label>
           <input
@@ -108,7 +105,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Discounted Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Discounted Price</label>
           <input
@@ -120,7 +116,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Description */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Description</label>
           <input
@@ -132,7 +127,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           />
         </div>
 
-        {/* Image URL */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Image URL</label>
           <input
@@ -154,7 +148,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           )}
         </div>
 
-        {/* Category Dropdown */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Category</label>
           <select

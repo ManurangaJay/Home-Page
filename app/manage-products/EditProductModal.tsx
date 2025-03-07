@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from "react";
-
-interface Category {
-  id: number;
-  name: string;
-}
+import axios from "axios";
+import { Product, Category } from "../components/types"; // Import shared type
 
 interface EditProductModalProps {
   isOpen: boolean;
-  product: {
-    name: string;
-    price: number;
-    discountedPrice?: number;
-    description: string;
-    categoryId: number | null; // Add categoryId here for the existing product
-  };
+  product: Product; // Ensure to use the shared Product type here
   onClose: () => void;
-  onSave: (updatedProduct: {
-    name: string;
-    price: number;
-    discountedPrice?: number;
-    description: string;
-    categoryId: number | null; // categoryId should be updated too
-  }) => void;
+  onSave: (updatedProduct: Product) => void; // Use the shared type here as well
 }
 
 const EditProductModal: React.FC<EditProductModalProps> = ({
@@ -30,11 +15,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   onClose,
   onSave,
 }) => {
-  const [editedProduct, setEditedProduct] = useState(product);
-  const [categories, setCategories] = useState<Category[]>([]); // State for categories
-  const [loading, setLoading] = useState<boolean>(false); // Loading state for categories
+  const [editedProduct, setEditedProduct] = useState<Product>(product);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // Fetch categories when the modal opens
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
@@ -68,9 +52,22 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
     }));
   };
 
-  const handleSave = () => {
-    onSave(editedProduct);
-    onClose();
+  const handleSave = async () => {
+    try {
+      // Send the updated product to the API
+      await axios.put(
+        `http://localhost:3001/products/${editedProduct.id}`,
+        editedProduct
+      );
+
+      // Pass the updated product to onSave
+      onSave(editedProduct);
+
+      // Close the modal
+      onClose();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
 
   if (!isOpen) return null;
@@ -83,7 +80,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       <div className="bg-white p-8 rounded-xl w-[500px] shadow-lg">
         <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
 
-        {/* Product Name */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Name</label>
           <input
@@ -95,7 +91,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
-        {/* Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Price (LKR)</label>
           <input
@@ -107,7 +102,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
-        {/* Discounted Price */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">
             Discounted Price (LKR)
@@ -121,7 +115,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
-        {/* Description */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Description</label>
           <input
@@ -134,12 +127,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         </div>
 
         {/* Category Dropdown */}
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Category</label>
+        <div className="mb-6 flex items-center justify-between">
+          <label className="block text-gray-700 mb-2 mr-4">
+            {editedProduct.category?.name || "No Category"}
+          </label>
           <select
-            value={editedProduct.categoryId ?? "none"} // Set selected category
+            value={editedProduct.categoryId ?? "none"}
             onChange={handleCategoryChange}
-            className="w-full border p-3 rounded-lg shadow-sm"
+            className="w-full max-w-[300px] border p-3 rounded-lg shadow-sm"
           >
             <option value="none">No Category</option>
             {loading ? (

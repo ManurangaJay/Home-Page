@@ -16,7 +16,6 @@ interface Product {
 const TodaysDeals = () => {
   const { selectedCategoryId } = useCategory();
   const [todaysDeals, setTodaysDeals] = useState<Product[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [page, setPage] = useState<number>(0);
   const dealsRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,7 +25,7 @@ const TodaysDeals = () => {
         ? `&category=${selectedCategoryId}`
         : "";
       const response = await axios.get<Product[]>(
-        `http://localhost:3001/products?section=deals&page=${newPage}&limit=20${categoryParam}`
+        `http://localhost:3001/products?section=deals${categoryParam}&page=${newPage}&limit=20`
       );
       setTodaysDeals((prev) =>
         newPage === 0 ? response.data : [...prev, ...response.data]
@@ -40,34 +39,41 @@ const TodaysDeals = () => {
     fetchTodaysDeals(page);
   }, [page, selectedCategoryId]);
 
-  // Reset deals when category changes
   useEffect(() => {
     setPage(0);
-    setCurrentIndex(0);
     setTodaysDeals([]);
     fetchTodaysDeals(0);
   }, [selectedCategoryId]);
 
   const scrollDeals = (direction: "left" | "right") => {
+    if (!dealsRef.current) return;
+
     const itemsToScroll =
-      window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
-    const newIndex =
-      direction === "right"
-        ? currentIndex + itemsToScroll
-        : Math.max(currentIndex - itemsToScroll, 0);
+      window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4; // Number of items to scroll based on screen width
+    const itemWidth = dealsRef.current.children[0]?.clientWidth || 0; // Get width of the first item
+    const scrollAmount = itemWidth * itemsToScroll; // Scroll by the width of 'itemsToScroll' items
 
-    if (direction === "right" && newIndex + 4 >= todaysDeals.length) {
-      setPage((prev) => prev + 1);
-    } else if (direction === "left" && newIndex === 0 && page > 0) {
-      setPage((prev) => prev - 1);
-    }
+    const currentScroll = dealsRef.current.scrollLeft;
 
-    setCurrentIndex(newIndex);
-
-    if (dealsRef.current) {
-      const scrollAmount = dealsRef.current.children[0]?.clientWidth || 0;
+    if (direction === "right") {
+      // Check if we've reached the end of the list and load more products if necessary
+      if (
+        currentScroll + scrollAmount >=
+        dealsRef.current.scrollWidth - dealsRef.current.clientWidth
+      ) {
+        setPage((prev) => prev + 1);
+      }
       dealsRef.current.scrollTo({
-        left: scrollAmount * newIndex,
+        left: currentScroll + scrollAmount,
+        behavior: "smooth",
+      });
+    } else if (direction === "left") {
+      // Prevent scrolling past the beginning
+      if (currentScroll - scrollAmount <= 0 && page > 0) {
+        setPage((prev) => prev - 1);
+      }
+      dealsRef.current.scrollTo({
+        left: Math.max(currentScroll - scrollAmount, 0),
         behavior: "smooth",
       });
     }
@@ -81,14 +87,12 @@ const TodaysDeals = () => {
       <div className="hidden md:flex justify-end mb-4 gap-4 pr-16">
         <FaCircleArrowLeft
           size={40}
-          className="cursor-pointer bg-white text-gray-400 transition delay-150 
-          duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
+          className="cursor-pointer bg-white text-gray-400 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           onClick={() => scrollDeals("left")}
         />
         <FaCircleArrowRight
           size={40}
-          className="cursor-pointer bg-white text-gray-400 transition delay-150 
-          duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
+          className="cursor-pointer bg-white text-gray-400 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           onClick={() => scrollDeals("right")}
         />
       </div>
@@ -100,7 +104,7 @@ const TodaysDeals = () => {
         {todaysDeals.map((product) => (
           <div
             className="pb-5 lg:pl-8"
-            key={`${product.id}-${currentIndex}`}
+            key={product.id}
             style={{
               flex: `0 0 ${
                 window.innerWidth < 768

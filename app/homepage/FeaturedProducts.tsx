@@ -26,7 +26,11 @@ const FeaturedProducts = () => {
         const response = await axios.get<Product[]>(
           `http://localhost:3001/products?section=featured&page=${featuredPage}&limit=4${categoryParam}`
         );
-        setFeaturedProducts(response.data);
+        // Append the new products to the existing ones
+        setFeaturedProducts((prevProducts) => [
+          ...prevProducts,
+          ...response.data,
+        ]);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }

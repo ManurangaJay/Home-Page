@@ -5,7 +5,7 @@ import ManageProductCard from "./ManageProductCard";
 import EditProductModal from "./EditProductModal";
 import AddProductSection from "./AddProductSection";
 import Toast from "./Toast";
-import { Product } from "../components/types"; // Import the shared type
+import { Product } from "../components/types";
 
 const ManageProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);

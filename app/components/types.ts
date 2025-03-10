@@ -14,5 +14,5 @@ export interface Product {
   reviewsCount?: number;
   isDeal?: boolean;
   categoryId: number | null;
-  category: Category; // Ensure category is included
+  category?: Category;
 }

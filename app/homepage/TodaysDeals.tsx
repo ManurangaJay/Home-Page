@@ -49,14 +49,12 @@ const TodaysDeals = () => {
     if (!dealsRef.current) return;
 
     const itemsToScroll =
-      window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4; // Number of items to scroll based on screen width
-    const itemWidth = dealsRef.current.children[0]?.clientWidth || 0; // Get width of the first item
-    const scrollAmount = itemWidth * itemsToScroll; // Scroll by the width of 'itemsToScroll' items
-
+      window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    const itemWidth = dealsRef.current.children[0]?.clientWidth || 0;
+    const scrollAmount = itemWidth * itemsToScroll;
     const currentScroll = dealsRef.current.scrollLeft;
 
     if (direction === "right") {
-      // Check if we've reached the end of the list and load more products if necessary
       if (
         currentScroll + scrollAmount >=
         dealsRef.current.scrollWidth - dealsRef.current.clientWidth
@@ -68,7 +66,6 @@ const TodaysDeals = () => {
         behavior: "smooth",
       });
     } else if (direction === "left") {
-      // Prevent scrolling past the beginning
       if (currentScroll - scrollAmount <= 0 && page > 0) {
         setPage((prev) => prev - 1);
       }

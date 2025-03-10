@@ -18,7 +18,6 @@ const BestSellingProducts = () => {
         const response = await axios.get<Product[]>(
           `http://localhost:3001/products?section=best-selling&page=${bestSellingPage}&limit=4${categoryParam}`
         );
-        // Append the newly fetched products to the existing ones
         setBestSellingProducts((prevProducts) => [
           ...prevProducts,
           ...response.data,
@@ -32,7 +31,7 @@ const BestSellingProducts = () => {
   }, [bestSellingPage, selectedCategoryId]);
 
   useEffect(() => {
-    setBestSellingPage(0); // Reset the page when the category changes
+    setBestSellingPage(0);
   }, [selectedCategoryId]);
 
   const handleViewMore = () => setBestSellingPage((prev) => prev + 1);

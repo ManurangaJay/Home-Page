@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Product, Category } from "../components/types"; // Import shared type
+import { Product, Category } from "../components/types";
 
 interface EditProductModalProps {
   isOpen: boolean;
-  product: Product; // Ensure to use the shared Product type here
+  product: Product;
   onClose: () => void;
-  onSave: (updatedProduct: Product) => void; // Use the shared type here as well
+  onSave: (updatedProduct: Product) => void;
 }
 
 const EditProductModal: React.FC<EditProductModalProps> = ({
@@ -53,17 +53,15 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   };
 
   const handleSave = async () => {
+    const { category, ...updatedProductData } = editedProduct; // Exclude 'category'
+
     try {
-      // Send the updated product to the API
       await axios.put(
         `http://localhost:3001/products/${editedProduct.id}`,
-        editedProduct
+        updatedProductData
       );
 
-      // Pass the updated product to onSave
-      onSave(editedProduct);
-
-      // Close the modal
+      onSave(updatedProductData);
       onClose();
     } catch (error) {
       console.error("Error updating product:", error);
@@ -126,7 +124,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           />
         </div>
 
-        {/* Category Dropdown */}
         <div className="mb-6 flex items-center justify-between">
           <label className="block text-gray-700 mb-2 mr-4">
             {editedProduct.category?.name || "No Category"}

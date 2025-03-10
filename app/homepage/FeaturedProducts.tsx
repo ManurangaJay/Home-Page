@@ -26,11 +26,7 @@ const FeaturedProducts = () => {
         const response = await axios.get<Product[]>(
           `http://localhost:3001/products?section=featured&page=${featuredPage}&limit=4${categoryParam}`
         );
-        // Append the new products to the existing ones
-        setFeaturedProducts((prevProducts) => [
-          ...prevProducts,
-          ...response.data,
-        ]);
+        setFeaturedProducts(response.data);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }
@@ -45,7 +41,7 @@ const FeaturedProducts = () => {
     <div>
       <h1 className="text-4xl font-semibold text-gray-800 mb-6">
         {selectedCategoryId
-          ? `Today's Featured Items(Under the Selected Category)`
+          ? `Today's Featured Items(under Selected Category)`
           : "Today's Featured Items:"}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">

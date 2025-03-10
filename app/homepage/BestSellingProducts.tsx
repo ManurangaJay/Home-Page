@@ -9,19 +9,30 @@ const BestSellingProducts = () => {
   const [bestSellingProducts, setBestSellingProducts] = useState<Product[]>([]);
   const [bestSellingPage, setBestSellingPage] = useState(0);
 
+  // Reset products and page when category changes
+  useEffect(() => {
+    setBestSellingProducts([]); // Clear the existing products
+    setBestSellingPage(0); // Reset page to 0 to fetch the first batch of products
+  }, [selectedCategoryId]);
+
   useEffect(() => {
     const fetchBestSellingProducts = async () => {
       try {
-        const categoryParam = selectedCategoryId
-          ? `&category=${selectedCategoryId}`
-          : "";
+        const categoryParam =
+          selectedCategoryId !== null ? `&category=${selectedCategoryId}` : "";
         const response = await axios.get<Product[]>(
           `http://localhost:3001/products?section=best-selling&page=${bestSellingPage}&limit=4${categoryParam}`
         );
-        setBestSellingProducts((prevProducts) => [
-          ...prevProducts,
-          ...response.data,
-        ]);
+        // If it's the first page (page 0), replace existing products with new ones
+        if (bestSellingPage === 0) {
+          setBestSellingProducts(response.data);
+        } else {
+          // If it's a subsequent page, append the new products to the existing list
+          setBestSellingProducts((prevProducts) => [
+            ...prevProducts,
+            ...response.data,
+          ]);
+        }
       } catch (error) {
         console.error("Error fetching best-selling products:", error);
       }
@@ -29,10 +40,6 @@ const BestSellingProducts = () => {
 
     fetchBestSellingProducts();
   }, [bestSellingPage, selectedCategoryId]);
-
-  useEffect(() => {
-    setBestSellingPage(0);
-  }, [selectedCategoryId]);
 
   const handleViewMore = () => setBestSellingPage((prev) => prev + 1);
 

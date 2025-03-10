@@ -18,15 +18,22 @@ const FeaturedProducts = () => {
   const [featuredPage, setFeaturedPage] = useState(0);
 
   useEffect(() => {
+    setFeaturedProducts([]);
+    setFeaturedPage(0);
+  }, [selectedCategoryId]);
+
+  useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
-        const categoryParam = selectedCategoryId
-          ? `&category=${selectedCategoryId}`
-          : "";
+        const categoryParam =
+          selectedCategoryId !== null ? `&category=${selectedCategoryId}` : "";
         const response = await axios.get<Product[]>(
           `http://localhost:3001/products?section=featured&page=${featuredPage}&limit=4${categoryParam}`
         );
-        setFeaturedProducts(response.data);
+        setFeaturedProducts((prevProducts) => [
+          ...prevProducts,
+          ...response.data,
+        ]);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }
@@ -42,7 +49,7 @@ const FeaturedProducts = () => {
       <h1 className="text-4xl font-semibold text-gray-800 mb-6">
         {selectedCategoryId
           ? `Today's Featured Items(under Selected Category)`
-          : "Today's Featured Items:"}
+          : "Today's Featured Items (All Categories):"}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {featuredProducts.map((product) => (

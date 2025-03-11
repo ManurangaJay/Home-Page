@@ -37,7 +37,7 @@ const TodaysDeals = () => {
 
   useEffect(() => {
     fetchTodaysDeals(page);
-  }, [page, selectedCategoryId]);
+  }, [page]);
 
   useEffect(() => {
     setPage(0);
@@ -84,11 +84,13 @@ const TodaysDeals = () => {
       <div className="hidden md:flex justify-end mb-4 gap-4 pr-16">
         <FaCircleArrowLeft
           size={40}
+          aria-label="Scroll left"
           className="cursor-pointer bg-white text-gray-400 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           onClick={() => scrollDeals("left")}
         />
         <FaCircleArrowRight
           size={40}
+          aria-label="Scroll right"
           className="cursor-pointer bg-white text-gray-400 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           onClick={() => scrollDeals("right")}
         />
@@ -96,6 +98,8 @@ const TodaysDeals = () => {
       <div
         ref={dealsRef}
         className="flex overflow-x-auto gap-4 px-4 scrollbar-hide"
+        role="region"
+        aria-label="Today's Deals Carousel"
         style={{ scrollSnapType: "x mandatory" }}
       >
         {todaysDeals.map((product) => (

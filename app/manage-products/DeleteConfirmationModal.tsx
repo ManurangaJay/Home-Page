@@ -28,12 +28,14 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
           <button
             onClick={onClose}
             className="py-2 px-6 bg-gray-300 text-black rounded-md"
+            data-testid="modal-cancel-button"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
             className="py-2 px-6 bg-red-600 text-white rounded-md"
+            data-testid="modal-delete-button"
           >
             Delete
           </button>

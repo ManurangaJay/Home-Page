@@ -31,11 +31,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
+    const newFavoriteStatus = !isFavorite;
+    setIsFavorite(newFavoriteStatus);
     alert(
-      isFavorite
-        ? `${name} removed from favorites!`
-        : `${name} added to favorites!`
+      newFavoriteStatus
+        ? `${name} added to favorites!`
+        : `${name} removed from favorites!`
     );
   };
 

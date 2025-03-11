@@ -52,10 +52,10 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   }, [isOpen]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     setNewProduct((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "number" ? Number(value) : value,
     }));
   };
 
@@ -84,8 +84,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         <h2 className="text-2xl font-semibold mb-6">Add New Product</h2>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Name</label>
+          <label htmlFor="name" className="block text-gray-700 mb-2">
+            Name
+          </label>
           <input
+            id="name"
             type="text"
             name="name"
             value={newProduct.name}
@@ -95,8 +98,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Price</label>
+          <label htmlFor="price" className="block text-gray-700 mb-2">
+            Price
+          </label>
           <input
+            id="price"
             type="number"
             name="price"
             value={newProduct.price}
@@ -106,8 +112,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Discounted Price</label>
+          <label htmlFor="discountedPrice" className="block text-gray-700 mb-2">
+            Discounted Price
+          </label>
           <input
+            id="discountedPrice"
             type="number"
             name="discountedPrice"
             value={newProduct.discountedPrice || ""}
@@ -117,8 +126,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Description</label>
+          <label htmlFor="description" className="block text-gray-700 mb-2">
+            Description
+          </label>
           <input
+            id="description"
             type="text"
             name="description"
             value={newProduct.description}
@@ -128,8 +140,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Image URL</label>
+          <label htmlFor="image" className="block text-gray-700 mb-2">
+            Image URL
+          </label>
           <input
+            id="image"
             type="text"
             name="image"
             value={newProduct.image}
@@ -149,8 +164,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Category</label>
+          <label htmlFor="category" className="block text-gray-700 mb-2">
+            Category
+          </label>
           <select
+            id="category"
             value={newProduct.categoryId ?? "none"}
             onChange={handleCategoryChange}
             className="w-full border p-3 rounded-lg shadow-sm"
